@@ -18,51 +18,38 @@
  */
 package org.nuxeo.ecm.platform.forms.layout.demo.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import javax.inject.Inject;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nuxeo.ecm.platform.forms.layout.demo.service.DemoLayout;
 import org.nuxeo.ecm.platform.forms.layout.demo.service.DemoWidgetType;
 import org.nuxeo.ecm.platform.forms.layout.demo.service.LayoutDemoManager;
-import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.test.NXRuntimeTestCase;
+import org.nuxeo.runtime.test.runner.Deploy;
+import org.nuxeo.runtime.test.runner.Features;
+import org.nuxeo.runtime.test.runner.FeaturesRunner;
+import org.nuxeo.runtime.test.runner.RuntimeFeature;
 
 /**
  * @author Anahide Tchertchian
  */
-public class TestLayoutDemoService extends NXRuntimeTestCase {
+@RunWith(FeaturesRunner.class)
+@Features(RuntimeFeature.class)
+@Deploy("org.nuxeo.ecm.platform.forms.layout.demo:OSGI-INF/layout-demo-framework.xml")
+@Deploy("org.nuxeo.ecm.platform.forms.layout.demo:OSGI-INF/layout-demo-contrib.xml")
+public class TestLayoutDemoService {
 
+    @Inject
     protected LayoutDemoManager service;
-
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-
-        deployContrib("org.nuxeo.ecm.platform.forms.layout.demo", "OSGI-INF/layout-demo-framework.xml");
-        deployContrib("org.nuxeo.ecm.platform.forms.layout.demo", "OSGI-INF/layout-demo-contrib.xml");
-
-        service = Framework.getService(LayoutDemoManager.class);
-    }
-
-    public void testService() throws Exception {
-        assertNotNull(service);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        service = null;
-
-        undeployContrib("org.nuxeo.ecm.platform.forms.layout.demo", "OSGI-INF/layout-demo-contrib.xml");
-        undeployContrib("org.nuxeo.ecm.platform.forms.layout.demo", "OSGI-INF/layout-demo-framework.xml");
-
-        super.tearDown();
-    }
 
     @Test
     public void testRegistration() throws Exception {
